@@ -1,0 +1,74 @@
+[tool.poetry]
+name = "multiwalletsystem"
+version = "0.1.0"
+description = ""
+authors = ["Azizjon <azizaliev2337@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.112.0"
+beanie = "^1.26.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+structlog = "^24.4.0"
+uvicorn = "^0.30.5"
+pydantic = {extras = ["email"], version = "^2.8.2"}
+pydantic-settings = "^2.4.0"
+python-multipart = "^0.0.9"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.7"
+mypy = "^1.11.1"
+black = "^24.8.0"
+pre-commit = "^3.8.0"
+
+[tool.mypy]
+ignore_missing_imports = true
+check_untyped_defs = true
+no_implicit_optional = true
+show_error_codes = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unreachable = true
+
+[tool.ruff]
+#max-line-length = 88
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+]
+ignore = [
+    "E501",  # line too long, handled by black.
+    "B008",  # do not perform function calls in argument defaults.
+    "B010",  # Do not call `setattr` with a constant attribute value.
+]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "venv",
+    "__pycache__",
+]
+
+[tool.ruff.isort]
+known-third-party = ["fastapi", "pydantic", "starlette"]
+#line-length = 88
+combine-as-imports = true
+#multi-line-output = 3
+#include-trailing-comma = true
+#force-grid-wrap = 0
+
+[tool.ruff.per-file-ignores]
+# Ignore `F401` violations in any `__init__.py` file.
+"__init__.py" = ["F401"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
