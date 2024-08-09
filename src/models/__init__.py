@@ -7,6 +7,7 @@ from beanie import Document
 # initialize them on startup.
 from .url import ShortUrl
 from .user import User
+from .wallet import Wallet
 
 DocType = TypeVar("DocType", bound=Document)
 

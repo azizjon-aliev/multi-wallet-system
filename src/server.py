@@ -1,8 +1,12 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from http import HTTPStatus
 
+from fastapi import FastAPI
+from fastapi.requests import Request
+from fastapi.responses import JSONResponse
 from src import api
 from src.core.config import settings
+from src.core.exceptions import EntityNotFoundException
 from src.core.logging import configure_logging
 from src.db import init_db
 
@@ -55,3 +59,14 @@ if settings.CORS_ORIGINS:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    try:
+        response = await call_next(request)
+    except EntityNotFoundException as exc:
+        return JSONResponse(
+            status_code=HTTPStatus.NOT_FOUND, content={"detail": exc.message}
+        )
+    return response
