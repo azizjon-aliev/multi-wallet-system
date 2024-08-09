@@ -4,7 +4,7 @@ from http import HTTPStatus
 from fastapi import FastAPI
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse
-from slowapi import _rate_limit_exceeded_handler, Limiter
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from src import api
 from src.api.rate_limiter import limiter

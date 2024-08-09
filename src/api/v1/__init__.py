@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from src.api.v1.endpoints import auth, users, wallet, transaction
+from src.api.v1.endpoints import auth, transaction, users, wallet
 from src.core.config import settings
 
 router = APIRouter(prefix=f"/{settings.API_V1_STR}")

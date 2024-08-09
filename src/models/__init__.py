@@ -5,10 +5,10 @@ from beanie import Document
 
 # All database models must be imported here to be able to
 # initialize them on startup.
-from .url import ShortUrl
-from .user import User
 from .wallet import Wallet
 from .transaction import Transaction
+from .exchange_rate import ExchangeRate
+from .user import User
 
 DocType = TypeVar("DocType", bound=Document)
 

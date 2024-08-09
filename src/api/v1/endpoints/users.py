@@ -41,6 +41,14 @@ async def update_current_user(
     return user
 
 
+@router.delete("/me")
+async def update_current_user(
+    user: User = Depends(get_current_active_user),
+):
+    """Update current user using provided data."""
+    await user.delete()
+
+
 @router.get("/", response_model=schemas.Paginated[schemas.User])
 async def get_users(
     paging: schemas.PaginationParams = Depends(),
@@ -85,3 +93,14 @@ async def update_user_by_username(
     update_data = user_in.dict(exclude_unset=True)
     await user.set(update_data)
     return user
+
+
+@router.delete("/{username}")
+async def delete_user_by_username(
+    username: str,
+):
+    """Update a specific user by username."""
+    user = await User.get_by_username(username=username)
+    if not user:
+        raise user_not_found_error()
+    await user.delete()

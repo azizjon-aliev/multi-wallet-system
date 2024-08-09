@@ -12,7 +12,6 @@ class Currency(StrEnum):
 
 class Wallet(Document):
     user_id: PydanticObjectId
-    name: str
     currency: Currency
     balance: float = Field(default=0.0)
 
