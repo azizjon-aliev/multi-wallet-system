@@ -6,7 +6,6 @@ from fastapi import HTTPException
 from src.core.exceptions import EntityNotFoundException
 from src.models import Transaction, User, Wallet
 from src.schemas.transaction import TransactionCreate, TransactionUpdate
-from src.services.wallet import wallet_not_found
 
 
 def transaction_not_found(transaction_id: PydanticObjectId) -> HTTPException:
@@ -29,9 +28,7 @@ class TransactionService:
         return transactions
 
     async def get_by_id(
-        self,
-        transaction_id: PydanticObjectId,
-        user: User
+        self, transaction_id: PydanticObjectId, user: User
     ) -> Transaction:
         transaction = await Transaction.get(transaction_id)
 
@@ -41,7 +38,7 @@ class TransactionService:
         if transaction.created_by != user.id:
             raise HTTPException(
                 status_code=403,
-                detail="You are not allowed to update this transaction."
+                detail="You are not allowed to update this transaction.",
             )
 
         return transaction
@@ -52,10 +49,10 @@ class TransactionService:
         credit_wallet = await Wallet.get(transaction.credit)
 
         if not debit_wallet:
-            wallet_not_found(wallet_id=transaction.debit)
+            raise HTTPException(status_code=422, detail="Debit wallet not found.")
 
         if not credit_wallet:
-            wallet_not_found(wallet_id=transaction.credit)
+            raise HTTPException(status_code=422, detail="Credit wallet not found.")
 
         # Проверка баланса на кошельке-дебет
         if debit_wallet.balance < transaction.amount:
@@ -85,7 +82,7 @@ class TransactionService:
         self,
         transaction_id: PydanticObjectId,
         transaction_update: TransactionUpdate,
-        user: User
+        user: User,
     ):
         # Получение существующей транзакции
         transaction = await Transaction.get(transaction_id)
@@ -96,7 +93,7 @@ class TransactionService:
         if transaction.created_by != user.id:
             raise HTTPException(
                 status_code=403,
-                detail="You are not allowed to update this transaction."
+                detail="You are not allowed to update this transaction.",
             )
 
         if transaction_update.debit and transaction_update.credit:
@@ -107,7 +104,7 @@ class TransactionService:
 
             if not debit_wallet or not credit_wallet:
                 raise HTTPException(
-                    status_code=404, detail="One or both wallets not found."
+                    status_code=422, detail="One or both wallets not found."
                 )
 
             if debit_wallet.balance < transaction_update.amount:
@@ -117,7 +114,9 @@ class TransactionService:
         transaction.amount = transaction_update.amount or transaction.amount
         transaction.currency = transaction_update.currency or transaction.currency
         transaction.rate = transaction_update.rate or transaction.rate
-        transaction.description = transaction_update.description or transaction.description
+        transaction.description = (
+            transaction_update.description or transaction.description
+        )
 
         # Сохранение обновленной транзакции
         await transaction.save()
@@ -133,7 +132,7 @@ class TransactionService:
         if transaction.created_by != user.id:
             raise HTTPException(
                 status_code=403,
-                detail="You are not allowed to update this transaction."
+                detail="You are not allowed to update this transaction.",
             )
 
         await transaction.delete()

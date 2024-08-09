@@ -5,11 +5,11 @@ from pydantic import BaseModel, Field
 SchemaType = TypeVar("SchemaType", bound=BaseModel)
 
 
-class Paginated(BaseModel):
+class Paginated[T](BaseModel):
     page: int
     per_page: int
     total: int
-    results: List[SchemaType]
+    results: List[T]
 
 
 class PaginationParams(BaseModel):

@@ -27,10 +27,6 @@ tags_metadata = [
         "name": "Users",
         "description": "User registration and management",
     },
-    {
-        "name": "URLs",
-        "description": "Shorten and manage URLs",
-    },
 ]
 
 app = FastAPI(
