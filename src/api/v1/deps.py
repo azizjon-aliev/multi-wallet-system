@@ -11,12 +11,22 @@ from src import schemas
 from src.core import security
 from src.core.config import settings
 from src.models import User
+from src.services.transaction import TransactionService
+from src.services.wallet import WalletService
 
 bearer_token = OAuth2PasswordBearer(
     tokenUrl=f"/api/{settings.API_V1_STR}/auth/access-token",
     auto_error=False,
 )
 api_key_query = APIKeyQuery(name="api_key", auto_error=False)
+
+
+async def get_transaction_service() -> TransactionService:
+    return TransactionService()
+
+
+async def get_wallet_service() -> WalletService:
+    return WalletService()
 
 
 async def authenticate_bearer_token(token: str) -> Optional[User]:

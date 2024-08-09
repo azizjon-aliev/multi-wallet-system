@@ -8,6 +8,7 @@ from beanie import Document
 from .url import ShortUrl
 from .user import User
 from .wallet import Wallet
+from .transaction import Transaction
 
 DocType = TypeVar("DocType", bound=Document)
 
