@@ -18,7 +18,7 @@ ENV PATH="$POETRY_HOME/bin:$PATH"
 
 WORKDIR /code
 
-COPY pyproject11.toml poetry.lock* ./
+COPY pyproject.toml poetry.lock* ./
 
 RUN poetry install --no-ansi --no-interaction --without dev
 
@@ -32,6 +32,6 @@ COPY --from=builder /code/.venv ./.venv
 ENV PYTHONBUFFERED=1
 ENV PATH="/app/.venv/bin:$PATH"
 
-COPY ./shortify ./shortify
+COPY ./src ./src
 
 CMD [".venv/bin/python", "-m", "main"]

@@ -93,6 +93,7 @@ class WalletService:
         # Пополняем баланс кошелька
         wallet.balance += amount
 
+
         # Создаем запись о транзакции
         transaction = TransactionCreate(
             wallet_id=wallet_id,

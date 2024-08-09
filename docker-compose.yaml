@@ -10,16 +10,16 @@ services:
         - mongodb-data:/data/db
       restart: always
 
-#    backend:
-#        build:
-#            context: ./
-#        depends_on:
-#            - db
-#        env_file:
-#            - .env
-#        ports:
-#            - ${SHORTIFY_UVICORN_PORT}:${SHORTIFY_UVICORN_PORT}
-#        restart: always
+    backend:
+        build:
+            context: ./
+        depends_on:
+            - db
+        env_file:
+            - .env
+        ports:
+            - ${UVICORN_PORT}:${UVICORN_PORT}
+        restart: always
 
 volumes:
   mongodb-data:
