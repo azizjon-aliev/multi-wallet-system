@@ -18,4 +18,5 @@ async def init() -> None:
             email=settings.FIRST_SUPERUSER_EMAIL,
             hashed_password=get_password_hash(settings.FIRST_SUPERUSER_PASSWORD),
             is_superuser=True,
+            base_currency=settings.BASE_CURRENCY,
         ).insert()

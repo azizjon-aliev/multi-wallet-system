@@ -56,7 +56,7 @@ async def generate_access_token(
 @router.post(
     "/registration", response_model=schemas.User, status_code=status.HTTP_201_CREATED
 )
-async def register_user(user_in: schemas.UserCreate) -> JSONResponse:
+async def register_user(user_in: schemas.RegistrationRequest) -> JSONResponse:
     user = await User.get_by_username(username=user_in.username)
     if user:
         raise HTTPException(

@@ -4,7 +4,10 @@ from http import HTTPStatus
 from fastapi import FastAPI
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse
+from slowapi import _rate_limit_exceeded_handler, Limiter
+from slowapi.errors import RateLimitExceeded
 from src import api
+from src.api.rate_limiter import limiter
 from src.core.config import settings
 from src.core.exceptions import EntityNotFoundException
 from src.core.logging import configure_logging
@@ -39,6 +42,8 @@ app = FastAPI(
     openapi_tags=tags_metadata,
     lifespan=lifespan,
 )
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Add the router responsible for all /api/ endpoint requests
 app.include_router(api.router)

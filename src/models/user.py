@@ -5,7 +5,9 @@ from beanie import Document, Indexed
 from pydantic import EmailStr
 from pydantic.fields import Field
 
+from src.core.config import settings
 from src.core.security import create_api_key, verify_password
+from src.models.wallet import Currency
 
 
 class User(Document):
@@ -14,8 +16,8 @@ class User(Document):
     hashed_password: str
     is_active: bool = True
     is_superuser: bool = False
+    base_currency: Currency = Field(default=settings.BASE_CURRENCY)
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    api_key: str = Field(default_factory=create_api_key)
 
     @classmethod
     async def get_by_username(cls, *, username: str) -> Optional["User"]:
