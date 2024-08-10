@@ -10,8 +10,30 @@ git clone https://github.com/azizjon-aliev/multi-wallet-system.git
 cd multi-wallet-system
 ```
 
-## Create and configure environment variables:
+### Create and configure environment variables:
+```bash
+cp .env.example .env
+```
 
+## Build and run the Docker containers
+```bash
+docker-compose up -d --build
+```
 
-## Running the Project
+## Running without Docker
+### Create and activate a virtual environment:
+```bash
+python3 -m venv venv &&
+
+source venv/bin/activate
+```
+### Install the dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+### Run the project:
+```bash
+python -m main
+```
 
